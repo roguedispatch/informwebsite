@@ -6,6 +6,9 @@ const sample = require('./sample.json');
 
 require('dotenv').config();
 
+console.log('Database URI:', process.env.DATABASE_URI);
+
+
 const { PAYLOAD_SECRET, MONGODB_URI } = process.env;
 
 const createHomePage = async () => {
