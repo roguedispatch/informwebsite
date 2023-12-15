@@ -8,7 +8,7 @@ import { Type as CallToActionType } from '../blocks/CallToAction/Component';
 import { Content } from '../blocks/Content/Config';
 import { Type as ContentType } from '../blocks/Content/Component';
 import slug from '../fields/slug';
-
+import meta from '../fields/meta';
 
 export type Layout = CallToActionType | ContentType | ImageType
 
@@ -56,28 +56,7 @@ export const Page: CollectionConfig = {
         Image,
       ],
     },
-    {
-      name: 'meta',
-      label: 'Page Meta',
-      type: 'group',
-      fields: [
-        {
-          name: 'title',
-          label: 'Title',
-          type: 'text',
-        },
-        {
-          name: 'description',
-          label: 'Description',
-          type: 'textarea',
-        },
-        {
-          name: 'keywords',
-          label: 'Keywords',
-          type: 'text',
-        },
-      ],
-    },
+    meta,
     slug,
   ],
 };
