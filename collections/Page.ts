@@ -1,27 +1,33 @@
 import { CollectionConfig } from 'payload/types';
-import { MediaType } from './Media';
-import formatSlug from '../utilities/formatSlug';
-import { Image } from '../blocks/Image/Config';
-import { Type as ImageType } from '../blocks/Image/Component';
-import { CallToAction } from '../blocks/CallToAction/Config';
-import { Type as CallToActionType } from '../blocks/CallToAction/Component';
-import { Content } from '../blocks/Content/Config';
-import { Type as ContentType } from '../blocks/Content/Component';
+import { Type as MediaType } from './Media';
 import slug from '../fields/slug';
-import meta from '../fields/meta';
+import meta, { Type as MetaType } from '../fields/meta';
+import { Content, Type as ContentType } from '../blocks/Content';
+import { Image, Type as ImageType } from '../blocks/Image';
+import Spacer, { Type as SpacerType } from '../blocks/Spacer';
+import StickyContent, { Type as StickyContentType } from '../blocks/StickyContent';
+import Slider, { Type as SliderType } from '../blocks/Slider';
+import ImageGrid, { Type as ImageGridType } from '../blocks/ImageGrid';
+import ImageCollage, { Type as ImageCollageType } from '../blocks/ImageCollage';
 
-export type Layout = CallToActionType | ContentType | ImageType
+export type Layout =
+  ContentType
+  | ImageType
+  | ImageCollageType
+  | ImageGridType
+  | SliderType
+  | SpacerType
+  | StickyContentType
 
 export type Type = {
   title: string
+  heroType: 'minimal' | 'contentAboveImage' | 'contentLeftOfImage'
+  heroContent: unknown
+  heroImage?: MediaType
   slug: string
   image?: MediaType
   layout: Layout[]
-  meta: {
-    title?: string
-    description?: string
-    keywords?: string
-  }
+  meta: MetaType
 }
 
 export const Page: CollectionConfig = {
@@ -40,10 +46,41 @@ export const Page: CollectionConfig = {
       required: true,
     },
     {
-      name: 'image',
-      label: 'Featured Image',
+      type: 'radio',
+      name: 'heroType',
+      label: 'Hero Type',
+      required: true,
+      defaultValue: 'minimal',
+      options: [
+        {
+          label: 'Minimal',
+          value: 'minimal',
+        },
+        {
+          label: 'Content Above Image',
+          value: 'contentAboveImage',
+        },
+        {
+          label: 'Content Left of Image',
+          value: 'contentLeftOfImage',
+        },
+      ],
+    },
+    {
+      name: 'heroContent',
+      label: 'Hero Content',
+      type: 'richText',
+      required: true,
+    },
+    {
+      name: 'heroImage',
+      label: 'Hero Image',
       type: 'upload',
       relationTo: 'media',
+      required: true,
+      admin: {
+        condition: (_, siblingData) => siblingData?.heroType === 'contentAboveImage' || siblingData?.heroType === 'contentLeftOfImage',
+      },
     },
     {
       name: 'layout',
@@ -51,9 +88,13 @@ export const Page: CollectionConfig = {
       type: 'blocks',
       minRows: 1,
       blocks: [
-        CallToAction,
         Content,
         Image,
+        ImageCollage,
+        ImageGrid,
+        Slider,
+        Spacer,
+        StickyContent,
       ],
     },
     meta,

@@ -1,9 +1,12 @@
-import { Component as cta } from './CallToAction/Component';
-import { Component as content } from './Content/Component';
-import { Component as image } from './Image/Component';
+import { Content, Component as content } from './Content';
+import { Image, Component as image } from './Image';
+
+export const collections = {
+  Content,
+  Image,
+};
 
 export const components = {
-  cta,
   content,
   image,
 };
