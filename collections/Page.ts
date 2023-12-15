@@ -7,6 +7,7 @@ import { CallToAction } from '../blocks/CallToAction/Config';
 import { Type as CallToActionType } from '../blocks/CallToAction/Component';
 import { Content } from '../blocks/Content/Config';
 import { Type as ContentType } from '../blocks/Content/Component';
+import slug from '../fields/slug';
 
 
 export type Layout = CallToActionType | ContentType | ImageType
@@ -77,19 +78,7 @@ export const Page: CollectionConfig = {
         },
       ],
     },
-    {
-      name: 'slug',
-      label: 'Page Slug',
-      type: 'text',
-      admin: {
-        position: 'sidebar',
-      },
-      hooks: {
-        beforeValidate: [
-          formatSlug('title'),
-        ],
-      },
-    },
+    slug,
   ],
 };
 
